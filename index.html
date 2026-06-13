@@ -34,7 +34,9 @@
 
     <audio id="real-audio-engine" loop></audio>
 
+    <!-- INTERFAZ PRINCIPAL -->
     <div id="jarvis-core-ui" class="min-h-screen flex flex-col">
+        <!-- BARRA SUPERIOR -->
         <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50 px-8 py-5 flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center gap-3 cursor-pointer" onclick="promptAdminLogin()">
                 <h1 class="text-2xl font-black tracking-widest text-cyan-400 font-mono select-none">J.A.R.V.I.S.</h1>
@@ -48,9 +50,12 @@
             </div>
         </header>
 
+        <!-- CUERPO PRINCIPAL -->
         <main class="flex-1 p-6 max-w-[1600px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
             
+            <!-- COLUMNA IZQUIERDA -->
             <div class="lg:col-span-4 flex flex-col gap-6">
+                <!-- Directivas Globales -->
                 <div class="bg-slate-900/20 border border-slate-900 rounded-3xl p-6 flex flex-col h-[200px]">
                     <h2 class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-4 font-mono">Directivas Globales</h2>
                     <form id="form-objective" class="hidden gap-2 mb-4">
@@ -60,6 +65,7 @@
                     <div class="flex-1 overflow-y-auto no-scrollbar"><ul id="list-objectives" class="space-y-2"></ul></div>
                 </div>
 
+                <!-- Audio Engine -->
                 <div class="bg-slate-900/20 border border-slate-900 rounded-3xl p-6 flex flex-col h-[500px]">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xs font-bold tracking-widest text-purple-400 uppercase font-mono">Audio Engine</h2>
@@ -76,22 +82,34 @@
                 </div>
             </div>
 
+            <!-- COLUMNA DERECHA -->
             <div class="lg:col-span-8 flex flex-col gap-6">
                 
+                <!-- Terminal de Indexación (Admin Only) -->
                 <div id="upload-panel" class="hidden bg-slate-900/20 border border-amber-500/20 rounded-3xl p-6 amber-glow flex flex-col gap-5">
                     <h2 class="text-xs font-bold tracking-widest text-amber-400 uppercase font-mono border-b border-slate-900 pb-2">Terminal de Indexación Global (Cloudinary Direct Sync)</h2>
                     <div class="bg-slate-950/80 rounded-2xl p-4 border border-slate-900">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                            <div class="flex flex-col gap-2">
-                                <input type="text" id="lib-title" placeholder="Título visible del archivo..." class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-slate-200">
-                                <select id="lib-type" onchange="handleTypeChange()" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-slate-400">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                            <div class="flex flex-col gap-2.5">
+                                <input type="text" id="lib-title" placeholder="Título visible del archivo..." class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-xs font-mono text-slate-200">
+                                <select id="lib-type" onchange="handleTypeChange()" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-xs font-mono text-slate-400">
                                     <option value="Historieta / Cómic">📚 Historieta / Cómic (PDF)</option>
                                     <option value="Libro / PDF">📄 Libro / Novela (PDF)</option>
                                     <option value="Documento / Word">📝 Libro o Escrito (WORD)</option>
                                     <option value="Audio / MP3">🎵 Pista de Audio (MP3)</option>
                                 </select>
-                                <input type="text" id="lib-cover-url" placeholder="URL de Imagen de Portada (Opcional)..." class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-slate-200">
+                                
+                                <!-- NUEVO SELECTOR LOCAL PARA PORTADA -->
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center">
+                                    <label class="cursor-pointer text-xs font-mono text-cyan-400 text-center w-full flex flex-col items-center justify-center py-1">
+                                        <i class="ph ph-image block text-base mb-0.5"></i>
+                                        <span id="cover-label-text">Seleccionar Portada Device</span>
+                                        <input type="file" id="actual-cover-file" class="hidden" accept="image/*">
+                                    </label>
+                                </div>
+                                <span id="cover-file-status" class="block text-[9px] text-slate-500 font-mono truncate -mt-1 px-1">Sin portada cargada (se usará genérica)</span>
                             </div>
+
                             <div id="file-binary-container" class="p-3 bg-slate-900 rounded-xl flex items-center justify-center border border-dashed border-slate-800">
                                 <label class="cursor-pointer text-xs font-mono text-amber-400 text-center w-full h-full flex flex-col items-center justify-center py-4">
                                     <i class="ph ph-upload-simple block text-lg mb-1"></i>
@@ -105,6 +123,7 @@
                         <button type="button" id="btn-upload" class="w-full bg-amber-500 text-slate-950 font-black py-3 rounded-xl text-xs uppercase tracking-widest font-mono transition active:scale-[0.99]">Subir a Cloudinary e Indexar</button>
                     </div>
 
+                    <!-- MÓDULO EXPORTADOR DE BASE DE DATOS -->
                     <div class="bg-slate-950 p-4 rounded-2xl border border-slate-900 mt-2 flex flex-col gap-2">
                         <h3 class="text-[10px] font-bold text-amber-400 uppercase font-mono">Actualizador de Red Global</h3>
                         <p class="text-[11px] text-slate-400 font-mono">Al agregar o quitar archivos, haz clic aquí abajo, copia el texto generado y pégalo en tu archivo `vault.json` de GitHub para actualizar la app de todos tus usuarios.</p>
@@ -112,6 +131,7 @@
                     </div>
                 </div>
 
+                <!-- Visor Operativo Incorporado -->
                 <div id="document-reader-panel" class="hidden bg-slate-900/30 border border-cyan-500/30 rounded-3xl p-6 custom-glow flex flex-col h-[580px] backdrop-blur-sm">
                     <div class="flex justify-between items-center border-b border-slate-900 pb-3 mb-4">
                         <h3 id="reader-doc-title" class="text-xs font-bold text-slate-100 font-mono">Visor Operativo Activo</h3>
@@ -134,6 +154,7 @@
                     </div>
                 </div>
 
+                <!-- SECCIÓN I: CÓMICS -->
                 <div class="bg-slate-900/20 border border-slate-900 rounded-3xl p-6 flex flex-col gap-4">
                     <div class="flex justify-between items-center border-b border-slate-900 pb-2">
                         <h2 class="text-xs font-bold tracking-widest text-emerald-400 uppercase font-mono">Bóveda de Historietas y Cómics</h2>
@@ -142,6 +163,7 @@
                     <div id="grid-comics" class="max-h-[300px] overflow-y-auto no-scrollbar grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                 </div>
 
+                <!-- SECCIÓN II: LIBROS (PDF & WORD) -->
                 <div class="bg-slate-900/20 border border-slate-900 rounded-3xl p-6 flex flex-col gap-4">
                     <div class="flex justify-between items-center border-b border-slate-900 pb-2">
                         <h2 class="text-xs font-bold tracking-widest text-rose-400 uppercase font-mono">Biblioteca de Libros y Escritos</h2>
@@ -185,16 +207,14 @@
             }
         }
 
-        // FUNCIÓN CENTRAL: CARGAR LA BASE DE DATOS GLOBAL DESDE GITHUB
+        // CARGAR LA BASE DE DATOS GLOBAL DESDE GITHUB
         async function loadGlobalVault() {
             try {
-                // Intenta leer el archivo vault.json público del repositorio
                 const response = await fetch('vault.json?nocache=' + Date.now());
                 if (response.ok) {
                     globalVault = await response.json();
                     console.log("Base de datos global cargada con éxito.");
                 } else {
-                    // Si no existe el archivo todavía, usa el localStorage local para no perder lo que tenías
                     globalVault = JSON.parse(localStorage.getItem('jarvis_global_vault')) || [];
                 }
             } catch (e) {
@@ -248,7 +268,7 @@
         window.exportVaultJson = function() {
             const dataStr = JSON.stringify(globalVault, null, 2);
             navigator.clipboard.writeText(dataStr).then(() => {
-                alert("¡Base de datos copiada al portapapeles!\n\nAhora ve a tu GitHub, crea o edita el archivo 'vault.json' y pega este contenido.");
+                alert("¡Base de datos copiada al portapapeles!\n\nAhora ve a tu GitHub, edita el archivo 'vault.json' y pega este contenido.");
                 jarvisSpeak("Cadena de datos copiada en el portapapeles. Lista para inyección en el repositorio.");
             }).catch(err => {
                 alert("Error al copiar: " + err);
@@ -258,7 +278,10 @@
         let objectives = JSON.parse(localStorage.getItem('jarvis_objectives')) || [];
         function saveObjectives() { localStorage.setItem('jarvis_objectives', JSON.stringify(objectives)); }
 
+        // MANEJO DE ARCHIVOS LOCALES (BINARIO Y PORTADA)
         let activeFileBlob = null;
+        let activeCoverBlob = null;
+        
         const audioEngine = document.getElementById('real-audio-engine');
         const playerCover = document.getElementById('player-cover');
         const playerTitle = document.getElementById('player-title');
@@ -274,6 +297,7 @@
             jarvisSpeak(`Cambiando filtro de indexación a ${type}.`);
         }
 
+        // Listener del Archivo Principal
         document.getElementById('actual-binary-file').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -285,6 +309,17 @@
             }
         });
 
+        // Listener de la Portada Local
+        document.getElementById('actual-cover-file').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                activeCoverBlob = file;
+                document.getElementById('cover-file-status').innerText = `✓ Portada: ${file.name}`;
+                jarvisSpeak("Portada asignada desde el almacenamiento local.");
+            }
+        });
+
+        // Función universal de subida a Cloudinary
         async function uploadFileToCloudinary(file) {
             const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`;
             const formData = new FormData();
@@ -301,7 +336,6 @@
             const title = document.getElementById('lib-title').value.trim(); 
             const type = document.getElementById('lib-type').value; 
             const content = document.getElementById('lib-content').value.trim();
-            const rawCoverUrl = document.getElementById('lib-cover-url').value.trim();
             
             if(!title || !activeFileBlob) {
                 jarvisSpeak("Faltan datos obligatorios para la transmisión.");
@@ -310,39 +344,49 @@
             }
             
             const originalBtnText = document.getElementById('btn-upload').innerText;
-            document.getElementById('btn-upload').innerText = "TRANSMITIENDO...";
+            document.getElementById('btn-upload').innerText = "TRANSMITIENDO ENLACES...";
             document.getElementById('btn-upload').disabled = true;
-            jarvisSpeak(`Iniciando enlace de transmisión con Cloudinary para ${title}. Espere por favor.`);
+            jarvisSpeak(`Iniciando secuencia de subida doble para ${title}.`);
 
             try {
+                // 1. Subir el documento principal
                 const cloudUrl = await uploadFileToCloudinary(activeFileBlob);
                 
-                let cover = rawCoverUrl;
-                if (!cover) {
-                    if (type === "Historieta / Cómic") cover = "https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=300";
-                    else if (type === "Libro / PDF") cover = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300";
-                    else if (type === "Documento / Word") cover = "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=300";
-                    else if (type === "Audio / MP3") cover = "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300";
+                // 2. Subir la portada si se seleccionó una, o usar la genérica por defecto
+                let coverUrl = "";
+                if (activeCoverBlob) {
+                    document.getElementById('btn-upload').innerText = "SUBIENDO PORTADA...";
+                    coverUrl = await uploadFileToCloudinary(activeCoverBlob);
+                } else {
+                    if (type === "Historieta / Cómic") coverUrl = "https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=300";
+                    else if (type === "Libro / PDF") coverUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300";
+                    else if (type === "Documento / Word") coverUrl = "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=300";
+                    else if (type === "Audio / MP3") coverUrl = "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300";
                 }
 
-                const newElement = { id: Date.now(), title, type, content, cover, fileUrl: cloudUrl };
+                const newElement = { id: Date.now(), title, type, content, cover: coverUrl, fileUrl: cloudUrl };
                 globalVault.unshift(newElement);
                 
-                // Respaldo local por si acaso
                 localStorage.setItem('jarvis_global_vault', JSON.stringify(globalVault));
                 
+                // Resetear campos de texto y blobs
                 document.getElementById('lib-title').value = ''; 
                 document.getElementById('lib-content').value = ''; 
-                document.getElementById('lib-cover-url').value = '';
+                document.getElementById('actual-cover-file').value = '';
+                document.getElementById('actual-binary-file').value = '';
                 activeFileBlob = null;
+                activeCoverBlob = null;
+                
                 document.getElementById('binary-file-status').innerText = "Sin datos cargados";
+                document.getElementById('cover-file-status').innerText = "Sin portada cargada (se usará genérica)";
+                
                 refreshUI();
-                jarvisSpeak("Transmisión finalizada en la nube. Recuerde usar el botón 'Copiar Base de Datos' para guardar los cambios globales en GitHub.");
-                alert("¡Subido a Cloudinary!\n\nPara que el resto del mundo lo vea, recuerda hacer clic en el botón amarillo 'Copiar Base de Datos Sincronizada' y actualizar tu vault.json.");
+                jarvisSpeak("Transmisión finalizada con éxito. Almacenamiento dual verificado.");
+                alert("¡Subido todo con éxito!\n\nNo olvides copiar la base de datos sincronizada y actualizar tu vault.json en GitHub.");
             } catch (err) {
-                jarvisSpeak("Fallo crítico en el enlace de datos a la nube.");
+                jarvisSpeak("Fallo crítico en el enlace de datos.");
                 alert("Error crítico: " + err.message);
-            } finally {
+            } style {
                 document.getElementById('btn-upload').innerText = originalBtnText;
                 document.getElementById('btn-upload').disabled = false;
             }
@@ -496,7 +540,7 @@
         function toggleAbsoluteFullscreen() {
             const viewArea = document.getElementById('reader-view-area');
             if (!document.fullscreenElement) { viewArea.requestFullscreen(); jarvisSpeak("Modo pantalla completa activado."); } 
-            else { document.exitFullscreen(); jarvisSpeak("Pantalla completa desactivada."); }
+            else { document.exitFullscreen(); document.exitFullscreen(); jarvisSpeak("Pantalla completa desactivada."); }
         }
 
         function refreshUI() {
@@ -566,7 +610,6 @@
             return card;
         }
 
-        // Inicialización
         loadGlobalVault();
     </script>
 </body>
