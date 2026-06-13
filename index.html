@@ -99,7 +99,7 @@
                                     <option value="Audio / MP3">🎵 Pista de Audio (MP3)</option>
                                 </select>
                                 
-                                <!-- NUEVO SELECTOR LOCAL PARA PORTADA -->
+                                <!-- SELECTOR DE IMAGEN DESDE DISPOSITIVO -->
                                 <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center">
                                     <label class="cursor-pointer text-xs font-mono text-cyan-400 text-center w-full flex flex-col items-center justify-center py-1">
                                         <i class="ph ph-image block text-base mb-0.5"></i>
@@ -177,7 +177,6 @@
     </div>
 
     <script>
-        // DATA INTEGRADA DE CLOUDINARY
         const CLOUDINARY_CLOUD_NAME = "dftgh2c6d"; 
         const CLOUDINARY_PRESET = "jarvis_preset"; 
 
@@ -190,7 +189,6 @@
         let isAdminActive = false;
         const MASTER_KEY = '2969';
 
-        // SINTETIZADOR DE VOZ
         function jarvisSpeak(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -207,7 +205,6 @@
             }
         }
 
-        // CARGAR LA BASE DE DATOS GLOBAL DESDE GITHUB
         async function loadGlobalVault() {
             try {
                 const response = await fetch('vault.json?nocache=' + Date.now());
@@ -264,7 +261,6 @@
             setTimeout(() => location.reload(), 1200);
         }
 
-        // GENERADOR DE TEXTO PARA GITHUB (VAULT.JSON)
         window.exportVaultJson = function() {
             const dataStr = JSON.stringify(globalVault, null, 2);
             navigator.clipboard.writeText(dataStr).then(() => {
@@ -278,7 +274,6 @@
         let objectives = JSON.parse(localStorage.getItem('jarvis_objectives')) || [];
         function saveObjectives() { localStorage.setItem('jarvis_objectives', JSON.stringify(objectives)); }
 
-        // MANEJO DE ARCHIVOS LOCALES (BINARIO Y PORTADA)
         let activeFileBlob = null;
         let activeCoverBlob = null;
         
@@ -297,7 +292,6 @@
             jarvisSpeak(`Cambiando filtro de indexación a ${type}.`);
         }
 
-        // Listener del Archivo Principal
         document.getElementById('actual-binary-file').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -309,7 +303,6 @@
             }
         });
 
-        // Listener de la Portada Local
         document.getElementById('actual-cover-file').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -319,7 +312,6 @@
             }
         });
 
-        // Función universal de subida a Cloudinary
         async function uploadFileToCloudinary(file) {
             const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`;
             const formData = new FormData();
@@ -349,10 +341,8 @@
             jarvisSpeak(`Iniciando secuencia de subida doble para ${title}.`);
 
             try {
-                // 1. Subir el documento principal
                 const cloudUrl = await uploadFileToCloudinary(activeFileBlob);
                 
-                // 2. Subir la portada si se seleccionó una, o usar la genérica por defecto
                 let coverUrl = "";
                 if (activeCoverBlob) {
                     document.getElementById('btn-upload').innerText = "SUBIENDO PORTADA...";
@@ -369,7 +359,6 @@
                 
                 localStorage.setItem('jarvis_global_vault', JSON.stringify(globalVault));
                 
-                // Resetear campos de texto y blobs
                 document.getElementById('lib-title').value = ''; 
                 document.getElementById('lib-content').value = ''; 
                 document.getElementById('actual-cover-file').value = '';
@@ -386,7 +375,7 @@
             } catch (err) {
                 jarvisSpeak("Fallo crítico en el enlace de datos.");
                 alert("Error crítico: " + err.message);
-            } style {
+            } finally {
                 document.getElementById('btn-upload').innerText = originalBtnText;
                 document.getElementById('btn-upload').disabled = false;
             }
@@ -540,7 +529,7 @@
         function toggleAbsoluteFullscreen() {
             const viewArea = document.getElementById('reader-view-area');
             if (!document.fullscreenElement) { viewArea.requestFullscreen(); jarvisSpeak("Modo pantalla completa activado."); } 
-            else { document.exitFullscreen(); document.exitFullscreen(); jarvisSpeak("Pantalla completa desactivada."); }
+            else { document.exitFullscreen(); jarvisSpeak("Pantalla completa desactivada."); }
         }
 
         function refreshUI() {
